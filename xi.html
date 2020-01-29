@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <title>じゃんけんゲーム</title>
+</head>
+
+<body>
+    <div id="message1" style="position:absolute; left:10px; top:10px">
+        あなたの出目は ？
+    </div>
+    <div id="message2" style="position:absolute; left:10px; top:40px">
+        相手の出目は ？
+    </div>
+    <div id="message3" style="position:absolute; left:10px; top:70px">
+        勝敗の結果は ？
+    </div>
+    <div id="message4" style="position:absolute; left:10px; top:100px">
+        点数は　？
+    </div>
+    <form style="position:absolute; left:10px; top:140px">
+        <input type="button" value="サイコロをふる" onclick="myGame()">
+        <input type="button" value="結果" onclick="over()">
+    </form>
+
+    <script>
+        function judYaku(num1, num2, num3) {
+            // num1 = 4;
+            // num2 = 5;
+            // num3 = 6;
+            
+            // ソート
+            let num_array = [num1, num2, num3];
+            num_array.sort(function (a, b) {
+                if (a < b) return -1;
+                if (a > b) return 1;
+                return 0;
+            });
+
+            let result = 0;
+            // 5点 : 目が”1”で３つ同じ  (1 , 1 , 1)
+            // 3点 : 目が”1” 以外で３つ同じ目　(3 , 3 , 3)
+            // 2点 : (1 , 2 , 3) , (4 , 5 , 6)
+            // 1点 : (2 , 3 , 4) , (4 , 5 , 6)
+            // 0点 : それ以外
+            if (num_array[0] === 1 && num_array[0] == num_array[1] && num_array[0] == num_array[2]) {
+                result = 5;
+            } else if (num_array[0] == num_array[1] && num_array[0] == num_array[2]) {
+                result = 3;
+            } else if (num_array[0] === 1 && num_array[1] === 2 && num_array[2] === 3) {
+                result = 2;
+            } else if (num_array[0] === 4 && num_array[1] === 5 && num_array[2] === 6) {
+                result = 2;
+            }else if (num_array[0] === 2 && num_array[1] === 3 && num_array[2] === 4) {
+                result = 1;
+            }else if (num_array[0] === 3 && num_array[1] === 4 && num_array[2] === 5) {
+                result = 1;
+            }
+            return result;
+        }
+
+        function myGame() {
+            // 自分のさいころ
+            myxi1 = Math.floor(Math.random() * 6) + 1;
+            myxi2 = Math.floor(Math.random() * 6) + 1;
+            myxi3 = Math.floor(Math.random() * 6) + 1;
+
+            // 相手のサイコロ
+            hisxi1 = Math.floor(Math.random() * 6) + 1;
+            hisxi2 = Math.floor(Math.random() * 6) + 1;
+            hisxi3 = Math.floor(Math.random() * 6) + 1;
+
+            document.getElementById("message1").innerHTML = "あなたの出目は　" + myxi1 + " " + myxi2 + " " + myxi3;
+            document.getElementById("message2").innerHTML = "あいての出目は　" + hisxi1 + " " + hisxi2 + " " + hisxi3;
+
+            // 役の判定
+            let myx = judYaku(myxi1, myxi2, myxi3);
+            let hisx = judYaku(hisxi1, hisxi2, hisxi3);
+
+            let judge;
+            if (myx == hisx) {
+                judge = "引き分け"
+            }
+            else if (Math.max(myx, hisx) == myx) {
+                judge = "あなたの勝ち"
+            } else {
+                judge = "あなたの負け"
+            }
+
+            document.getElementById("message3").innerHTML = "勝敗の結果は " + judge;
+
+            document.getElementById("message4").innerHTML = "自分の点数は " + myx;
+        }
+    </script>
+
+</body>
+
+</html>
